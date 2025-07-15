@@ -6,16 +6,5 @@ vms:
     new_size: Standard_D4s_v3
     tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
 
-  apimxxxx1-windows:
-    up_cron:   '42 16 * * *'
-    down_cron: '55 16 * * *'
-    old_size: Standard_D2s_v3
-    new_size: Standard_D4s_v3
-    tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
 
-  apimxxxx2-linux:
-    up_cron:   '42 16 * * *'
-    down_cron: '55 16 * * *'
-    old_size: Standard_D2s_v3
-    new_size: Standard_D4s_v3
-    tfvars_path: application/apimxxxx2/apimxxxx2.tfvars
+
