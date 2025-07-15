@@ -1,0 +1,44 @@
+name: Scheduled Azure VM Resize
+
+on:
+  schedule:
+    - cron: '42 16 * * *'
+    - cron: '55 16 * * *'
+
+jobs:
+  resize-vms:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install pyyaml
+
+      - name: Set GITHUB_EVENT_SCHEDULE env var
+        run: echo "GITHUB_EVENT_SCHEDULE=${{ github.event.schedule }}" >> $GITHUB_ENV
+
+      - name: Run resize.py to update tfvars
+        run: python resize.py
+
+      - name: Terraform Apply for each application
+        run: |
+          for dir in application/*; do
+            tfvars=$(ls "$dir"/*.tfvars 2>/dev/null | head -n 1)
+            if [ -f "$tfvars" ]; then
+              cd $dir
+              terraform init
+              terraform apply -auto-approve -var-file=$(basename $tfvars)
+              cd ../..
+            fi
+          done
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
