@@ -1,8 +1,11 @@
 module "linux_vm" {
   source = "../../modules/linux_vm"
 
-  for_each = { for k, v in var.vms : k => v if v.os_type == "linux" && v.provider_alias == "default" }
-
+  for_each = { for k, v in var.vms : k => v if v.os_type == "linux" }
+  providers = {
+    azurerm = each.value.provider_alias == "default" ? azurerm : azurerm[each.value.provider_alias]
+  }
+  
   vm_name                      = each.key
   resource_group_name          = each.value.resource_group_name
   location                     = each.value.location
@@ -20,9 +23,12 @@ module "linux_vm" {
 }
 
 
-/*module "windows_vm" {
+module "windows_vm" {
   source   = "../../modules/windows_vm"
-  for_each = { for k, v in var.vms : k => v if v.os_type == "windows" && v.provider_alias == "default" }
+  for_each = { for k, v in var.vms : k => v if v.os_type == "windows" }
+  providers = {
+    azurerm = each.value.provider_alias == "default" ? azurerm : azurerm[each.value.provider_alias]
+  }
 
   vm_name                      = each.key
   resource_group_name          = each.value.resource_group_name
@@ -39,4 +45,4 @@ module "linux_vm" {
   source_image_sku             = each.value.source_image_sku
   source_image_version         = each.value.source_image_version
 }
-*/
+
