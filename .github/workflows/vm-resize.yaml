@@ -29,6 +29,17 @@ jobs:
       - name: Run resize.py to update tfvars
         run: python resize.py
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Apply for each application
         run: |
           for dir in application/*; do
