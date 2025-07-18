@@ -1,7 +1,7 @@
 vms:
   linuxvm:
-    up_cron:   '33 02 * * *'
-    down_cron: '53 03 * * *'
+    up_cron:   '43 06 * * *'
+    down_cron: '33 07 * * *'
     old_size: Standard_D2s_v3
     new_size: Standard_D4s_v3
     tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
