@@ -1,6 +1,6 @@
 vms:
   linuxvm:
-    up_cron:   '43 08 * * *'
+    up_cron:   '13 09 * * *'
     down_cron: '43 09 * * *'
     old_size: Standard_D2s_v3
     new_size: Standard_D4s_v3
