@@ -22,10 +22,7 @@ module "linux_vm" {
 /*
 module "windows_vm" {
   source   = "../../modules/windows_vm"
-  for_each = { for k, v in var.vms : k => v if v.os_type == "windows" }
-  providers = {
-    azurerm = each.value.provider_alias == "default" ? azurerm : azurerm[each.value.provider_alias]
-  }
+  for_each = { for k, v in var.vms : k => v if v.os_type == "windows" && v.provider_alias == "default" }
 
   vm_name                      = each.key
   resource_group_name          = each.value.resource_group_name
