@@ -18,17 +18,6 @@ module "linux_vm" {
   source_image_sku             = each.value.source_image_sku
   source_image_version         = each.value.source_image_version
 }
-
-resource "azurerm_linux_virtual_machine" "vm" {
-  name                            = var.vm_name
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
-  size                            = var.vm_size
-  admin_username                  = var.admin_username
-  network_interface_ids           = var.network_interface_ids
-  disable_password_authentication = true
-}
-
 /*
 module "windows_vm" {
   source   = "../../modules/windows_vm"
