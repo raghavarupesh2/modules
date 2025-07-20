@@ -2,17 +2,22 @@ name: Scheduled Azure VM Resize
 
 on:
   schedule:
-    - cron: '42 14 * * *'
-    - cron: '11 15 * * *'
+    - cron: '43 15 * * *'
+    - cron: '11 16 * * *'
 
 jobs:
   resize-vms:
     runs-on: ubuntu-latest
+    env:   # <-- Set your env block here (job-level)!
+      TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_sub1_subscription_id: ${{ secrets.SUB1_SUBSCRIPTION_ID }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-# Place this step before any Terraform commands.
+      # Place this step before any Terraform commands.
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -29,10 +34,10 @@ jobs:
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
-      
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
-        
+
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -40,6 +45,19 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+
+      - name: Terraform Plan for each application
+        run: |
+          for dir in application/*; do
+            tfvars=$(ls "$dir"/*.tfvars 2>/dev/null | head -n 1)
+            if [ -f "$tfvars" ]; then
+              cd $dir
+              terraform init
+              echo "## Terraform plan for $dir"
+              terraform plan -var-file=$(basename $tfvars) -no-color | tee plan-output.txt
+              cd ../..
+            fi
+          done
 
       - name: Terraform Apply for each application
         run: |
@@ -52,8 +70,3 @@ jobs:
               cd ../..
             fi
           done
-        env:
-          TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_sub1_subscription_id: ${{ secrets.SUB1_SUBSCRIPTION_ID }}
