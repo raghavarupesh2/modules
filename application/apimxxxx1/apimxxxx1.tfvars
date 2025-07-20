@@ -10,9 +10,9 @@ vms = {
     os_disk_caching              = "ReadWrite"
     os_disk_storage_account_type = "Standard_LRS"
     os_disk_disk_size_gb         = 64
-    source_image_publisher       = "Canonical"
-    source_image_offer           = "UbuntuServer"
-    source_image_sku             = "18.04-LTS"
+    source_image_publisher       = "RedHat"
+    source_image_offer           = "RHEL"
+    source_image_sku             = "94_gen2"
     source_image_version         = "latest"
     os_type                      = "linux"
   }
