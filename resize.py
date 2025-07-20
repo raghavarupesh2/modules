@@ -15,14 +15,26 @@ for vm_name, vm in schedule['vms'].items():
         continue
 
     tfvars_file = vm['tfvars_path']
-    vm_type = vm_name.split('-')[-1]  # 'linux' or 'windows'
-    key = f"{vm_type}_vm_size"
-
+    updated_lines = []
+    in_block = False
+    match_name = f'"{vm_name}"'
     with open(tfvars_file, 'r') as f:
-        lines = f.readlines()
-    with open(tfvars_file, 'w') as f:
-        for line in lines:
-            if line.strip().startswith(f"{key}"):
-                f.write(f'{key} = "{vm_size}"\n')
+        for line in f:
+            # Detect start of the VM block
+            if line.strip().startswith(match_name + " = {"):
+                in_block = True
+                updated_lines.append(line)
+                continue
+            # Detect end of the VM block
+            if in_block and line.strip() == "}":
+                in_block = False
+                updated_lines.append(line)
+                continue
+            # If inside the block, update vm_size
+            if in_block and line.strip().startswith("vm_size"):
+                updated_lines.append(f'    vm_size = "{vm_size}"\n')
             else:
-                f.write(line)
+                updated_lines.append(line)
+    # Write back the updated file
+    with open(tfvars_file, 'w') as f:
+        f.writelines(updated_lines)
