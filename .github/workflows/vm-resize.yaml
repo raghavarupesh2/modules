@@ -1,3 +1,4 @@
+
 name: Scheduled Azure VM Resize
 
 on:
@@ -8,6 +9,14 @@ on:
 jobs:
   resize-vms:
     runs-on: ubuntu-latest
+    # Set env for ALL steps (DRY)
+    env:
+      TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_admin_password: ${{ secrets.WINDOWS_ADMIN_PASSWORD }}
+      TF_VAR_sub1_subscription_id: ${{ secrets.SUB1_SUBSCRIPTION_ID }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -59,8 +68,3 @@ jobs:
               cd ../..
             fi
           done
-        env:
-          TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-          TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          TF_VAR_sub1_subscription_id: ${{ secrets.SUB1_SUBSCRIPTION_ID }}
