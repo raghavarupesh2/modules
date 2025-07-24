@@ -20,8 +20,8 @@ module "linuxvm" {
 }
 
 
-/*
-module "windows_vm" {
+
+module "raghavaw" {
   source   = "../../modules/windows_vm"
   for_each = { for k, v in var.vms : k => v if v.os_type == "windows" && v.provider_alias == "default" }
 
@@ -40,4 +40,4 @@ module "windows_vm" {
   source_image_sku             = each.value.source_image_sku
   source_image_version         = each.value.source_image_version
 }
-*/
+
