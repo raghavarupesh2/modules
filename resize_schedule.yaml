@@ -6,5 +6,10 @@ vms:
     new_size: Standard_D2as_v6
     tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
 
-
-
+  raghavaw:
+    up_cron:   '42 14 * * *'
+    down_cron: '11 15 * * *'
+    old_size: Standard_DS1_v2
+    new_size: Standard_DS2_v2
+    tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
+  
