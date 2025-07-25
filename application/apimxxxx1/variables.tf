@@ -16,7 +16,7 @@ variable "vms" {
     location                     = string
     vm_size                      = string
     admin_username               = string
-    admin_password               = optional(string)
+    admin_password               = optional(string) # Only for Windows VMs
     admin_ssh_public_key         = optional(string)
     network_interface_ids        = list(string)
     os_disk_caching              = string
