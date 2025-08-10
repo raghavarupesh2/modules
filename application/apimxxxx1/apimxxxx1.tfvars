@@ -23,7 +23,7 @@ vms = {
     location            = "West US 2"
     vm_size             = "Standard_DS1_v2"
     admin_username      = "azureadmin"
-    admin_password      = "Dummypassword"
+    admin_password      = "DummyPassword123!" # Only for Windows VMs
     network_interface_ids = [
       "/subscriptions/888e7a98-44ab-4dc4-b0d3-a14548e8ab06/resourceGroups/Terraformrg/providers/Microsoft.Network/networkInterfaces/raghavaw216"
     ]
