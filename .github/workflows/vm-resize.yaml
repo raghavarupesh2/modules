@@ -3,10 +3,10 @@ name: Scheduled Azure VM Resize
 
 on:
   schedule:
-    - cron: '20 16 * * *'
-    - cron: '53 16 * * *'
-    - cron: '20 16 * * *'
-    - cron: '53 16 * * *'
+    - cron: '03 05 * * *'
+    - cron: '23 05 * * *'
+    - cron: '03 05 * * *'
+    - cron: '23 05 * * *'
 
 jobs:
   resize-vms:
