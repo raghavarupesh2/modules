@@ -1,14 +1,14 @@
 vms:
   linuxvm:
-    up_cron:   '20 16 * * *'
-    down_cron: '53 16 * * *'
+    up_cron:   '03 05 * * *'
+    down_cron: '23 05 * * *'
     old_size: Standard_D2ads_v6
     new_size: Standard_D2as_v6
     tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
 
   raghavaw:
-    up_cron:   '23 18 * * *'
-    down_cron: '53 18 * * *'
+    up_cron:   '03 05 * * *'
+    down_cron: '23 05 * * *'
     old_size: Standard_DS1_v2
     new_size: Standard_DS2_v2
     tfvars_path: application/apimxxxx1/apimxxxx1.tfvars
